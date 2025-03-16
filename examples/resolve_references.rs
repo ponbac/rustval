@@ -11,7 +11,7 @@ fn main() {
 /// Example function to demonstrate reference resolution by fully resolving all paths
 fn demonstrate_reference_resolution() {
     println!("Loading OpenAPI specification...");
-    let data = fs::read_to_string("data/externaldata.swagger.yaml").expect("Could not read file");
+    let data = fs::read_to_string("data/purchase.swagger.yaml").expect("Could not read file");
     let openapi: OpenAPI = serde_yaml::from_str(&data).expect("Could not deserialize input");
 
     println!("\n=== Resolving all paths and their schema references ===");
@@ -166,8 +166,30 @@ fn print_schema_structure(schema: &Schema) {
             openapiv3::Type::Object(obj) => {
                 println!("          Type: Object");
                 println!("          Properties:");
-                for (name, _) in &obj.properties {
-                    println!("            - {}", name);
+                for (name, property) in &obj.properties {
+                    match property {
+                        ReferenceOr::Reference { reference: _ } => {
+                            println!("            - {}: Reference (Resolved)", name);
+                        }
+                        ReferenceOr::Item(schema) => {
+                            let type_str = match &schema.schema_kind {
+                                openapiv3::SchemaKind::Type(t) => match t {
+                                    openapiv3::Type::Object(_) => "Object",
+                                    openapiv3::Type::Array(_) => "Array",
+                                    openapiv3::Type::String(_) => "String",
+                                    openapiv3::Type::Number(_) => "Number",
+                                    openapiv3::Type::Integer(_) => "Integer",
+                                    openapiv3::Type::Boolean(_) => "Boolean",
+                                },
+                                openapiv3::SchemaKind::OneOf { .. } => "OneOf",
+                                openapiv3::SchemaKind::AllOf { .. } => "AllOf",
+                                openapiv3::SchemaKind::AnyOf { .. } => "AnyOf",
+                                openapiv3::SchemaKind::Not { .. } => "Not",
+                                openapiv3::SchemaKind::Any(_) => "Any",
+                            };
+                            println!("            - {}: {}", name, type_str);
+                        }
+                    }
                 }
             }
             openapiv3::Type::Array(array) => {
