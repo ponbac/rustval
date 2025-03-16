@@ -70,6 +70,7 @@ dependencies = [
 name = "rustval"
 version = "0.1.0"
 dependencies = [
+ "indexmap",
  "openapiv3",
  "serde",
  "serde_json",
