@@ -2,12 +2,14 @@ use std::fs;
 
 use indexmap::map::IndexMap;
 use openapiv3::{OpenAPI, ReferenceOr, Schema};
+use rustval::resolve_ref::{resolve_request_body_ref, resolve_response_ref, resolve_schema_fully};
 
-use crate::resolve_ref::resolvers::{resolve_request_body_ref, resolve_response_ref};
-use crate::resolve_ref::schema::resolve_schema_fully;
+fn main() {
+    demonstrate_reference_resolution();
+}
 
 /// Example function to demonstrate reference resolution by fully resolving all paths
-pub fn demonstrate_reference_resolution() {
+fn demonstrate_reference_resolution() {
     println!("Loading OpenAPI specification...");
     let data = fs::read_to_string("data/externaldata.swagger.yaml").expect("Could not read file");
     let openapi: OpenAPI = serde_yaml::from_str(&data).expect("Could not deserialize input");

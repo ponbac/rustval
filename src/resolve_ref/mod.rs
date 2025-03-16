@@ -2,14 +2,12 @@
 //!
 //! This module provides utilities for resolving references in OpenAPI specifications.
 
-mod demo;
 mod resolvers;
 mod schema;
 mod traits;
 mod utils;
 
 // Re-export the public API
-pub use demo::demonstrate_reference_resolution;
 pub use resolvers::{
     ExampleResolver, GenericResolver, ParameterResolver, RequestBodyResolver, ResponseResolver,
     SchemaResolver,

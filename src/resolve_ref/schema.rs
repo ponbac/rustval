@@ -102,11 +102,11 @@ pub fn resolve_schema_fully(schema: &ReferenceOr<Schema>, spec: &OpenAPI) -> Opt
 /// Helper function to resolve a list of schemas in-place
 ///
 /// This is used for resolving schema compositions like oneOf, allOf, and anyOf.
-pub fn resolve_schema_list(schema_list: &mut Vec<ReferenceOr<Schema>>, spec: &OpenAPI) {
-    for i in 0..schema_list.len() {
+pub fn resolve_schema_list(schema_list: &mut [ReferenceOr<Schema>], spec: &OpenAPI) {
+    (0..schema_list.len()).for_each(|i| {
         let schema_ref = schema_list[i].clone();
         if let Some(resolved) = resolve_schema_fully(&schema_ref, spec) {
             schema_list[i] = ReferenceOr::Item(resolved);
         }
-    }
+    });
 }

@@ -1,11 +1,6 @@
 // Re-export the public API
 pub mod resolve_ref;
 
-// Main entry point for the example
-pub fn main() {
-    resolve_ref::demonstrate_reference_resolution();
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,10 +1,9 @@
 /// Parse an OpenAPI reference string into its component parts
 ///
-/// # Examples
+/// ### Examples
 ///
 /// ```
-/// use rustval::resolve_ref::parse_ref;
-///
+/// # use rustval::resolve_ref::parse_ref;
 /// let parts = parse_ref("#/components/schemas/User");
 /// assert_eq!(parts, vec!["components", "schemas", "User"]);
 /// ```
